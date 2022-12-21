@@ -21,7 +21,7 @@ New-WorkProject -ProjectName "MyProject"
 To create a new project named "MyProject" with a custom project directory and only a PowerShell file:
 
  ```POWERSHELL
-New-WorkProject -ProjectName "MyProject" -ProjectDirectory "C:\Projects\MyProject" -PowerShell -Readme:$false -WorkLog:$false
+New-WorkProject -ProjectName "MyProject" -ProjectDirectory "C:\Projects\MyProject" -PowerShell
  ```
 
 To create a new project named "MyProject" with a custom ticket number and task link:
