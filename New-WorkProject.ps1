@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Creates a new project directory with optional components, including a README file, worklog file, and PowerShell script file.
+Creates a new project directory with optional components, including a README file, worklog file, an Outlook/To Do task, and PowerShell script file.
 
 .DESCRIPTION
-The New-WorkProject function allows you to easily create a new project directory, README file, worklog file, and PowerShell script file. The function also includes the ability to specify a ticket number and task link for the project, which will be included in the README file and allows you to specify whether to create the README file, worklog file, and PowerShell script file. If none of these options are specified, all four components will be created by default.
+The New-WorkProject function allows you to easily create a new project directory, README file, worklog file, Outlook/To Do task, and PowerShell script file. The function also includes the ability to specify a ticket number and task link for the project, which will be included in the README file and allows you to specify whether to create the README file, worklog file, and PowerShell script file. If none of these options are specified, all four components will be created by default.
 
 .PARAMETER ProjectName
 Specifies the name of the project. This parameter is required.
@@ -19,6 +19,9 @@ Specifies whether to create a README file for the project. If this parameter is 
 
 .PARAMETER WorkLog
 Specifies whether to create a worklog file for the project. If this parameter is not specified, a worklog file will not be created.
+
+.PARAMETER CreateTask
+Specifies whether to create an Outlook/To Do item for the project. If this parameter is not specified, a task will not be created.
 
 .PARAMETER TicketNumber
 Specifies the ticket number for the project. If this parameter is not specified, the ticket number will not be included in the README file.
@@ -57,6 +60,9 @@ function New-WorkProject {
         
         [Parameter(Mandatory = $false)]
         [switch]$WorkLog,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$CreateTask,
         
         [Parameter(Mandatory = $false)]
         [string]$TicketNumber,
@@ -65,10 +71,11 @@ function New-WorkProject {
         [string]$TaskLink
     )
 
-    if ((-not $PowerShell) -and (-not $Readme) -and (-not $WorkLog)) {
+    if ((-not $PowerShell) -and (-not $Readme) -and (-not $WorkLog) -and (-not $CreateTask)) {
         $PowerShell = $TRUE
         $Readme = $TRUE
         $WorkLog = $TRUE
+        $CreateTask = $TRUE
     }
     
     # Set the default project directory
@@ -99,6 +106,16 @@ function New-WorkProject {
 
 "@
         Add-Content -Path $worklogFile -Value $worklogContent -NoNewline
+    }
+
+    # Create the Outlook/To Do task if specified
+    if ($CreateTask) {
+
+        $outlook = New-Object -ComObject Outlook.Application 
+        $taskList = $outlook.Session.GetDefaultFolder([Microsoft.Office.Interop.Outlook.OlDefaultFolders]::olFolderTasks) 
+        $task = $taskList.Items.Add() 
+        $task.Subject = "$ProjectName"
+        $task.Save()
     }
 
     # Create the README.MD file if specified
