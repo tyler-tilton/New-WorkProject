@@ -6,7 +6,7 @@ A PowerShell function for creating a new project directory and generating severa
 
 - `ProjectName`: a string value representing the name of the project (required)
 - `ProjectDirectory`: a string value representing the directory path where the project will be created (optional, default is `$env:USERPROFILE\Documents\$ProjectName`)
-- `PowerShell`, `Readme`, and `WorkLog`: switch values indicating whether to create a PowerShell file, README file, and worklog file, respectively (optional, default is to create all three if none are specified)
+- `PowerShell`, `Readme`, `CreateTask`, and `WorkLog`: switch values indicating whether to create a PowerShell file, README file, Outlook task and worklog file, respectively (optional, default is to create all four if none are specified)
 - `TicketNumber`: a string value representing a ticket number associated with the project (optional)
 - `TaskLink`: a string value representing a link to a task associated with the project (optional)
 
